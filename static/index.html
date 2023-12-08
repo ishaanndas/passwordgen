@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Password Generator</title>
+    <style>
+        html {
+            height: 100%;
+            display: table;
+            margin: auto;
+        }
+
+        body {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            display: table-cell;
+            vertical-align: middle;
+        }
+        
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            width: 500px;
+            border-radius: 14px;
+            box-shadow: 0 0 10px #1716164c; 
+        }
+        
+        h1 {
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        input {
+            border-radius: 3;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+        
+        button {
+            width: 450px;
+            padding: 10px 20px;
+            background-color: #67ac5c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 7px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Password Generator</h1>
+    <div class="container">
+        <label for="passwordLength">Password Length:</label>
+        <input type="number" id="passwordLength" name="passwordLength" value="16" min="1" max="100" required>
+        <br>
+        <label for="excludeNumbers">Exclude Numbers:</label>
+        <input type="checkbox" id="excludeNumbers" name="excludeNumbers">
+        <br>
+        <label for="excludeSpecialChars">Exclude Special Characters:</label>
+        <input type="checkbox" id="excludeSpecialChars" name="excludeSpecialChars">
+        <br>
+        <button type="submit" onclick="generatePassword()">Generate Password</button>
+        <p id="password"></p>
+    </div>
+
+    <script>
+        function generatePassword() {
+            var passwordLength = document.getElementById("passwordLength").value;
+            var excludeNumbers = document.getElementById("excludeNumbers").checked;
+            var excludeSpecialChars = document.getElementById("excludeSpecialChars").checked;
+
+
+            document.getElementById("password").innerText = "Generating Password...";
+
+            var url = `/generate?length=${passwordLength}&excludeNumbers=${excludeNumbers}&excludeSpecialChars=${excludeSpecialChars}`;
+            fetch(url)
+                .then(response => response.text())
+                .then(password => {
+                    var passwordElement = document.getElementById("password");
+                    passwordElement.innerText = password;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+</body>
+
+</html>
